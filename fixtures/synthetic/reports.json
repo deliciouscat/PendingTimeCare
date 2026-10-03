@@ -1,0 +1,389 @@
+[
+  {
+    "id": "report-01",
+    "familyId": "family-01",
+    "name": "합성 사례 01",
+    "featureSchemaVersion": "v1",
+    "q": [
+      66,
+      44,
+      62,
+      54,
+      null,
+      46
+    ],
+    "observationTopics": [
+      "attention",
+      "emotions"
+    ],
+    "consultationNote": "합성 상담 메모: 집중이 달라지는 순간을 살펴봐요 주제를 대화에서 다루었으며 생활 관찰을 준비함.",
+    "provenance": "independent-synthetic"
+  },
+  {
+    "id": "report-02",
+    "familyId": "family-02",
+    "name": "합성 사례 02",
+    "featureSchemaVersion": "v1",
+    "q": [
+      54,
+      64,
+      53,
+      54,
+      57,
+      51
+    ],
+    "observationTopics": [
+      "learning"
+    ],
+    "consultationNote": "합성 상담 메모: 작은 단계로 함께 준비해요 주제를 대화에서 다루었으며 생활 관찰을 준비함.",
+    "provenance": "independent-synthetic"
+  },
+  {
+    "id": "report-03",
+    "familyId": "family-03",
+    "name": "합성 사례 03",
+    "featureSchemaVersion": "v1",
+    "q": [
+      52,
+      49,
+      66,
+      43,
+      44,
+      46
+    ],
+    "observationTopics": [
+      "emotions"
+    ],
+    "consultationNote": "합성 상담 메모: 아이의 감정을 말로 만나봐요 주제를 대화에서 다루었으며 생활 관찰을 준비함.",
+    "provenance": "independent-synthetic"
+  },
+  {
+    "id": "report-04",
+    "familyId": "family-04",
+    "name": "합성 사례 04",
+    "featureSchemaVersion": "v1",
+    "q": [
+      51,
+      52,
+      43,
+      73,
+      46,
+      68
+    ],
+    "observationTopics": [
+      "worry",
+      "withdrawal"
+    ],
+    "consultationNote": "합성 상담 메모: 낯선 상황을 앞두고 대화해요 주제를 대화에서 다루었으며 생활 관찰을 준비함.",
+    "provenance": "independent-synthetic"
+  },
+  {
+    "id": "report-05",
+    "familyId": "family-05",
+    "name": "합성 사례 05",
+    "featureSchemaVersion": "v1",
+    "q": [
+      49,
+      46,
+      50,
+      52,
+      76,
+      55
+    ],
+    "observationTopics": [
+      "peers"
+    ],
+    "consultationNote": "합성 상담 메모: 친구와 함께하는 시간을 관찰해요 주제를 대화에서 다루었으며 생활 관찰을 준비함.",
+    "provenance": "independent-synthetic"
+  },
+  {
+    "id": "report-06",
+    "familyId": "family-06",
+    "name": "합성 사례 06",
+    "featureSchemaVersion": "v1",
+    "q": [
+      43,
+      55,
+      55,
+      null,
+      54,
+      68
+    ],
+    "observationTopics": [
+      "withdrawal"
+    ],
+    "consultationNote": "합성 상담 메모: 혼자 있는 시간과 함께하는 시간 주제를 대화에서 다루었으며 생활 관찰을 준비함.",
+    "provenance": "independent-synthetic"
+  },
+  {
+    "id": "report-07",
+    "familyId": "family-07",
+    "name": "합성 사례 07",
+    "featureSchemaVersion": "v1",
+    "q": [
+      64,
+      45,
+      66,
+      55,
+      48,
+      44
+    ],
+    "observationTopics": [
+      "attention",
+      "emotions"
+    ],
+    "consultationNote": "합성 상담 메모: 집중이 달라지는 순간을 살펴봐요 주제를 대화에서 다루었으며 생활 관찰을 준비함.",
+    "provenance": "independent-synthetic"
+  },
+  {
+    "id": "report-08",
+    "familyId": "family-08",
+    "name": "합성 사례 08",
+    "featureSchemaVersion": "v1",
+    "q": [
+      44,
+      75,
+      56,
+      48,
+      52,
+      47
+    ],
+    "observationTopics": [
+      "learning"
+    ],
+    "consultationNote": "합성 상담 메모: 작은 단계로 함께 준비해요 주제를 대화에서 다루었으며 생활 관찰을 준비함.",
+    "provenance": "independent-synthetic"
+  },
+  {
+    "id": "report-09",
+    "familyId": "family-09",
+    "name": "합성 사례 09",
+    "featureSchemaVersion": "v1",
+    "q": [
+      43,
+      54,
+      69,
+      51,
+      44,
+      57
+    ],
+    "observationTopics": [
+      "emotions"
+    ],
+    "consultationNote": "합성 상담 메모: 아이의 감정을 말로 만나봐요 주제를 대화에서 다루었으며 생활 관찰을 준비함.",
+    "provenance": "independent-synthetic"
+  },
+  {
+    "id": "report-10",
+    "familyId": "family-10",
+    "name": "합성 사례 10",
+    "featureSchemaVersion": "v1",
+    "q": [
+      44,
+      51,
+      47,
+      76,
+      53,
+      65
+    ],
+    "observationTopics": [
+      "worry",
+      "withdrawal"
+    ],
+    "consultationNote": "합성 상담 메모: 낯선 상황을 앞두고 대화해요 주제를 대화에서 다루었으며 생활 관찰을 준비함.",
+    "provenance": "independent-synthetic"
+  },
+  {
+    "id": "report-11",
+    "familyId": "family-11",
+    "name": "합성 사례 11",
+    "featureSchemaVersion": "v1",
+    "q": [
+      52,
+      46,
+      null,
+      44,
+      66,
+      53
+    ],
+    "observationTopics": [
+      "peers"
+    ],
+    "consultationNote": "합성 상담 메모: 친구와 함께하는 시간을 관찰해요 주제를 대화에서 다루었으며 생활 관찰을 준비함.",
+    "provenance": "independent-synthetic"
+  },
+  {
+    "id": "report-12",
+    "familyId": "family-12",
+    "name": "합성 사례 12",
+    "featureSchemaVersion": "v1",
+    "q": [
+      55,
+      47,
+      44,
+      56,
+      46,
+      64
+    ],
+    "observationTopics": [
+      "withdrawal"
+    ],
+    "consultationNote": "합성 상담 메모: 혼자 있는 시간과 함께하는 시간 주제를 대화에서 다루었으며 생활 관찰을 준비함.",
+    "provenance": "independent-synthetic"
+  },
+  {
+    "id": "report-13",
+    "familyId": "family-13",
+    "name": "합성 사례 13",
+    "featureSchemaVersion": "v1",
+    "q": [
+      65,
+      47,
+      65,
+      53,
+      56,
+      48
+    ],
+    "observationTopics": [
+      "attention",
+      "emotions"
+    ],
+    "consultationNote": "합성 상담 메모: 집중이 달라지는 순간을 살펴봐요 주제를 대화에서 다루었으며 생활 관찰을 준비함.",
+    "provenance": "independent-synthetic"
+  },
+  {
+    "id": "report-14",
+    "familyId": "family-14",
+    "name": "합성 사례 14",
+    "featureSchemaVersion": "v1",
+    "q": [
+      48,
+      73,
+      53,
+      47,
+      54,
+      57
+    ],
+    "observationTopics": [
+      "learning"
+    ],
+    "consultationNote": "합성 상담 메모: 작은 단계로 함께 준비해요 주제를 대화에서 다루었으며 생활 관찰을 준비함.",
+    "provenance": "independent-synthetic"
+  },
+  {
+    "id": "report-15",
+    "familyId": "family-15",
+    "name": "합성 사례 15",
+    "featureSchemaVersion": "v1",
+    "q": [
+      53,
+      44,
+      74,
+      53,
+      45,
+      51
+    ],
+    "observationTopics": [
+      "emotions"
+    ],
+    "consultationNote": "합성 상담 메모: 아이의 감정을 말로 만나봐요 주제를 대화에서 다루었으며 생활 관찰을 준비함.",
+    "provenance": "independent-synthetic"
+  },
+  {
+    "id": "report-16",
+    "familyId": "family-16",
+    "name": "합성 사례 16",
+    "featureSchemaVersion": "v1",
+    "q": [
+      46,
+      null,
+      50,
+      73,
+      47,
+      68
+    ],
+    "observationTopics": [
+      "worry",
+      "withdrawal"
+    ],
+    "consultationNote": "합성 상담 메모: 낯선 상황을 앞두고 대화해요 주제를 대화에서 다루었으며 생활 관찰을 준비함.",
+    "provenance": "independent-synthetic"
+  },
+  {
+    "id": "report-17",
+    "familyId": "family-17",
+    "name": "합성 사례 17",
+    "featureSchemaVersion": "v1",
+    "q": [
+      46,
+      53,
+      48,
+      56,
+      63,
+      55
+    ],
+    "observationTopics": [
+      "peers"
+    ],
+    "consultationNote": "합성 상담 메모: 친구와 함께하는 시간을 관찰해요 주제를 대화에서 다루었으며 생활 관찰을 준비함.",
+    "provenance": "independent-synthetic"
+  },
+  {
+    "id": "report-18",
+    "familyId": "family-18",
+    "name": "합성 사례 18",
+    "featureSchemaVersion": "v1",
+    "q": [
+      46,
+      56,
+      43,
+      55,
+      48,
+      67
+    ],
+    "observationTopics": [
+      "withdrawal"
+    ],
+    "consultationNote": "합성 상담 메모: 혼자 있는 시간과 함께하는 시간 주제를 대화에서 다루었으며 생활 관찰을 준비함.",
+    "provenance": "independent-synthetic"
+  },
+  {
+    "id": "report-19",
+    "familyId": "family-19",
+    "name": "합성 사례 19",
+    "featureSchemaVersion": "v1",
+    "q": [
+      68,
+      46,
+      63,
+      52,
+      57,
+      54
+    ],
+    "observationTopics": [
+      "attention",
+      "emotions"
+    ],
+    "consultationNote": "합성 상담 메모: 집중이 달라지는 순간을 살펴봐요 주제를 대화에서 다루었으며 생활 관찰을 준비함.",
+    "provenance": "independent-synthetic"
+  },
+  {
+    "id": "report-20",
+    "familyId": "family-20",
+    "name": "합성 사례 20",
+    "featureSchemaVersion": "v1",
+    "q": [
+      53,
+      70,
+      49,
+      57,
+      57,
+      53
+    ],
+    "observationTopics": [
+      "learning"
+    ],
+    "consultationNote": "합성 상담 메모: 작은 단계로 함께 준비해요 주제를 대화에서 다루었으며 생활 관찰을 준비함.",
+    "provenance": "independent-synthetic"
+  }
+]

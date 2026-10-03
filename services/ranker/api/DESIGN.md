@@ -12,7 +12,7 @@ health endpoint, rank endpoint, request validation, response serialization.
 
 ## 데이터 송수신
 
-RankerClient → API: requestId, Q, 후보 columnVersion/N/M/BM25용 본문 또는 토큰, K, 버전. API → core: 검증된 입력. core → API: ranked items/전략/버전. API → Convex: RankResponse.
+RankerClient → API: requestId, Q, 후보 columnVersion/N/M/다양성 계산용 칼럼 본문 또는 토큰, K, 버전. API → core: 검증된 입력. core → API: ranked items/전략/버전. API → Convex: RankResponse.
 
 ## 설계 제약
 

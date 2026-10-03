@@ -1,0 +1,18 @@
+[project]
+name = "pendingtimecare-ranker"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = [
+    "xgboost>=3.0,<4",
+    "numpy>=2,<3",
+    "rank-bm25>=0.2.2,<0.3",
+    "fastapi>=0.115,<1",
+    "uvicorn>=0.34,<1",
+    "jsonschema>=4.23,<5",
+    "pytest>=8,<10",
+    "httpx>=0.28,<1",
+    "scikit-learn>=1.6,<2",
+]
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]

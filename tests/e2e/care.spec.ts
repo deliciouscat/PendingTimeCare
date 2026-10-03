@@ -1,0 +1,46 @@
+import {test,expect} from '@playwright/test';
+import {readFileSync} from 'node:fs';
+const credentials=JSON.parse(readFileSync('.runtime/demo-login.json','utf8'));
+test('login → ranked scheduled content → response → reload',async({page})=>{
+ const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
+ await page.goto('/');
+ await page.getByLabel('이메일').fill(credentials.email);
+ await page.getByLabel('비밀번호').fill(credentials.password);
+ await page.getByRole('button',{name:'로그인',exact:true}).click();
+ await expect(page.getByRole('heading',{name:'새로운 상담 준비'})).toBeVisible();
+ await page.getByRole('button',{name:'상담 준비 시작',exact:true}).click();
+ await expect(page.getByRole('button',{name:'읽고 관찰하기'}).first()).toBeEnabled({timeout:20000});
+ await page.getByRole('button',{name:'읽고 관찰하기'}).first().click();
+ await page.locator('input[type=radio]').first().check();
+ await page.locator('textarea').fill('오후에 함께 놀았던 장면을 상담 때 이야기하고 싶어요.');
+ await page.getByRole('button',{name:'응답 저장',exact:true}).click();
+ await expect(page.getByText('응답이 저장되어 있습니다.')).toBeVisible();
+ await page.getByRole('button',{name:'← 준비 홈',exact:true}).click();
+ await expect(page.getByText('1/3 질문 완료')).toBeVisible();
+ await page.reload();
+ await expect(page.getByText('1/3 질문 완료')).toBeVisible();
+ await page.getByRole('button',{name:'읽고 관찰하기'}).first().click();
+ await expect(page.locator('textarea')).toHaveValue('오후에 함께 놀았던 장면을 상담 때 이야기하고 싶어요.');
+ await expect(page.locator('input[type=radio]').first()).toBeChecked();
+ await page.screenshot({path:'.runtime/care-desktop.png',fullPage:true});
+ await page.setViewportSize({width:390,height:844});
+ await expect(page.locator('main')).toBeVisible();
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBe(true);
+ await page.screenshot({path:'.runtime/care-mobile.png',fullPage:true});
+ expect(errors).toEqual([]);
+});
+test('GraphQL isolation and idempotency through real Convex',async({request,playwright})=>{
+ async function gql(client:any,query:string,variables:unknown={}){const r=await client.post('/api/graphql',{data:{query,variables}});return r.json()}
+ const login='mutation($e:String!,$p:String!){login(email:$e,password:$p){email}}';
+ await gql(request,login,{e:credentials.email,p:credentials.password});
+ const now=Date.now();const variables={input:{q:[70,50,51,62,49,null],receivedAt:now,consultationAt:now+6*86400000,timezone:'Asia/Seoul',featureSchemaVersion:'v1',demo:true},key:`test-${now}`};
+ const create='mutation($input:AssessmentInput!,$key:String!){createAssessment(input:$input,idempotencyKey:$key){id status}}';
+ const first=await gql(request,create,variables),second=await gql(request,create,variables);expect(second.data.createAssessment.id).toBe(first.data.createAssessment.id);
+ const conflict=await gql(request,create,{...variables,input:{...variables.input,q:[50,50,51,62,49,null]}});expect(conflict.errors[0].message).toBe('IDEMPOTENCY_CONFLICT');
+ const other=await playwright.request.newContext({baseURL:process.env.WEB_URL??'http://localhost:3000'});
+ await gql(other,login,{e:'guardian2@example.test',p:credentials.password});
+ const denied=await gql(other,'query($id:ID!){assessment(id:$id){id status}}',{id:first.data.createAssessment.id});expect(denied.errors[0].message).toBe('FORBIDDEN');
+ const unauth=await playwright.request.newContext({baseURL:process.env.WEB_URL??'http://localhost:3000'});
+ expect((await gql(unauth,'query {samples{id}}')).errors[0].message).toBe('FORBIDDEN');
+ await other.dispose();await unauth.dispose();
+});

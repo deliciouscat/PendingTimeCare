@@ -13,7 +13,7 @@
 | Dataset loader/validator | `trainset/manifest.json` + split별 JSONL → 검증된 보고서별 후보 묶음 |
 | Feature builder | Q, N, M 배열 + manifest 순서 → 고정 길이 수치 벡터. 추론 시에는 `services/ranker/core`와 같은 구현을 사용 |
 | Trainer | 보고서별 후보 묶음 + 관련도 label → XGBRanker 모델 |
-| Evaluator | 모델 + validation/test 묶음 → NDCG@3, 사용한 split·버전 기록 |
+| Evaluator | 모델 + validation/test 묶음 + 후보 칼럼 본문/토큰 snapshot → XGBRanker 단독·MMR 적용 결과의 NDCG@3·다양성, 사용한 split·버전 기록 |
 | Exporter | 모델·평가 결과·feature 순서 → `artifacts/`의 버전별 결과 |
 
 ## 데이터 흐름과 경계
@@ -28,6 +28,7 @@
 - `family_id` 단위로 train/validation/test를 나눠 동일 사례의 변형이 다른 split에 들어가지 않게 한다. split별로 각 보고서에 여러 후보와 구분 가능한 label이 있어야 한다.
 - 학습과 추론은 동일한 Q+N+M 순서, 결측 표현, 전처리 버전을 써야 한다. N은 `reference_document_ids`, M은 `consultation_type_ids` 순서다. Jev의 독립 확률을 합계 1로 정규화하지 않는다.
 - label은 0~3 정수의 칼럼 관련도이며 Jev 점수를 그대로 label로 삼지 않는다. 합성 데이터 평가는 파이프라인 검증 결과로만 해석한다.
+- BM25는 학습 입력에 추가하지 않는다. MMR 평가에서는 칼럼 버전과 일치하는 본문/토큰 snapshot을 별도로 읽어 칼럼 간 유사도를 계산한다. Q+N+M trainset 규격은 유지한다. λ 설정은 validation에서 정하고 test는 최종 비교에 사용한다.
 
 ## Design Pattern 힌트
 

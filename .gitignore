@@ -1,2 +1,48 @@
+# 원본 비공개 자료
 과제.md
 김인사_CBCL.md
+
+# 환경 변수와 로컬 인증·실행 데이터
+.env
+.env.*
+!.env.example
+.runtime/
+.convex/
+config/auth-public.json
+
+# Node.js / Next.js
+node_modules/
+.next/
+out/
+dist/
+build/
+*.tsbuildinfo
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+
+# 재생성 가능한 학습 산출물 (설계 문서는 유지)
+artifacts/*
+!artifacts/*.md
+trainset/**/*.jsonl
+trainset/**/*.csv
+trainset/**/*.tsv
+trainset/**/*.parquet
+
+# 테스트·로그·OS 파일
+coverage/
+htmlcov/
+.coverage
+.coverage.*
+playwright-report/
+test-results/
+*.log
+.DS_Store
+Thumbs.db

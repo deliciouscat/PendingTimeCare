@@ -1,0 +1,284 @@
+[
+  {
+    "id": "column-1-v1",
+    "version": "v1",
+    "title": "집중이 달라지는 순간을 살펴봐요",
+    "body": "집중은 활동과 주변 환경에 따라 달라질 수 있습니다. 숙제와 놀이 시간에 아이가 무엇을 편하게 느끼는지 살펴보세요. 잘 이어간 순간을 기록하고, 상담에서 생활 장면을 함께 이야기할 수 있습니다.",
+    "topic": "attention",
+    "status": "published",
+    "review": {
+      "scope": "developer-demo",
+      "reviewer": "PoC developer",
+      "reviewedAt": "2026-10-03",
+      "note": "데모 콘텐츠 검토. 임상 전문가 검수 아님."
+    },
+    "mockFeatures": {
+      "n": [
+        0.88,
+        0.1,
+        0.1
+      ],
+      "m": [
+        0.9,
+        0.08,
+        0.08,
+        0.08,
+        0.08,
+        0.08
+      ]
+    },
+    "fallbackQuestion": {
+      "questionPrompt": "최근 일주일, 아이가 놀이를 이어갈 때 어떤 모습이었나요?",
+      "options": [
+        {
+          "id": "option-1",
+          "text": "한 활동을 이어갔다"
+        },
+        {
+          "id": "option-2",
+          "text": "여러 활동을 오갔다"
+        },
+        {
+          "id": "option-3",
+          "text": "상황마다 달랐다"
+        }
+      ],
+      "freeTextHint": "덧붙이고 싶은 생활 장면을 적어 주세요. (선택)"
+    }
+  },
+  {
+    "id": "column-2-v1",
+    "version": "v1",
+    "title": "작은 단계로 함께 준비해요",
+    "body": "새로운 활동을 배우는 속도는 상황마다 다릅니다. 한 번에 많은 일을 설명하기보다 작은 단계로 나누어 함께 준비하세요. 어떤 안내를 이해하기 편했는지 생활 장면을 기록해 상담 때 나눌 수 있습니다.",
+    "topic": "learning",
+    "status": "published",
+    "review": {
+      "scope": "developer-demo",
+      "reviewer": "PoC developer",
+      "reviewedAt": "2026-10-03",
+      "note": "데모 콘텐츠 검토. 임상 전문가 검수 아님."
+    },
+    "mockFeatures": {
+      "n": [
+        0.88,
+        0.1,
+        0.1
+      ],
+      "m": [
+        0.08,
+        0.9,
+        0.08,
+        0.08,
+        0.08,
+        0.08
+      ]
+    },
+    "fallbackQuestion": {
+      "questionPrompt": "새로운 활동을 설명했을 때 어떤 안내를 편하게 받아들였나요?",
+      "options": [
+        {
+          "id": "option-1",
+          "text": "한 번에 설명을 들었다"
+        },
+        {
+          "id": "option-2",
+          "text": "작게 나눈 안내를 들었다"
+        },
+        {
+          "id": "option-3",
+          "text": "아직 관찰하지 못했다"
+        }
+      ],
+      "freeTextHint": "덧붙이고 싶은 생활 장면을 적어 주세요. (선택)"
+    }
+  },
+  {
+    "id": "column-3-v1",
+    "version": "v1",
+    "title": "아이의 감정을 말로 만나봐요",
+    "body": "기쁨과 속상함 등 아이의 감정에 이름을 붙여 이야기해 보세요. 아이가 대화를 원할 때 들어주고, 바로 답을 찾기보다 느낌을 존중하세요. 편안하게 감정을 표현했던 순간을 기록할 수 있습니다.",
+    "topic": "emotions",
+    "status": "published",
+    "review": {
+      "scope": "developer-demo",
+      "reviewer": "PoC developer",
+      "reviewedAt": "2026-10-03",
+      "note": "데모 콘텐츠 검토. 임상 전문가 검수 아님."
+    },
+    "mockFeatures": {
+      "n": [
+        0.1,
+        0.88,
+        0.1
+      ],
+      "m": [
+        0.08,
+        0.08,
+        0.9,
+        0.08,
+        0.08,
+        0.08
+      ]
+    },
+    "fallbackQuestion": {
+      "questionPrompt": "최근 아이가 감정을 표현할 때 어떤 모습이었나요?",
+      "options": [
+        {
+          "id": "option-1",
+          "text": "말로 표현했다"
+        },
+        {
+          "id": "option-2",
+          "text": "표정이나 행동으로 표현했다"
+        },
+        {
+          "id": "option-3",
+          "text": "상황마다 달랐다"
+        }
+      ],
+      "freeTextHint": "덧붙이고 싶은 생활 장면을 적어 주세요. (선택)"
+    }
+  },
+  {
+    "id": "column-4-v1",
+    "version": "v1",
+    "title": "낯선 상황을 앞두고 대화해요",
+    "body": "낯선 장소나 새로운 일정을 앞두면 누구나 여러 감정을 느낄 수 있습니다. 앞으로 어떤 일이 있을지 간단히 알려주고 아이가 궁금해하는 것을 들어보세요. 준비 과정에서 도움이 된 대화를 기록해 보세요.",
+    "topic": "worry",
+    "status": "published",
+    "review": {
+      "scope": "developer-demo",
+      "reviewer": "PoC developer",
+      "reviewedAt": "2026-10-03",
+      "note": "데모 콘텐츠 검토. 임상 전문가 검수 아님."
+    },
+    "mockFeatures": {
+      "n": [
+        0.1,
+        0.88,
+        0.1
+      ],
+      "m": [
+        0.08,
+        0.08,
+        0.65,
+        0.9,
+        0.08,
+        0.08
+      ]
+    },
+    "fallbackQuestion": {
+      "questionPrompt": "새로운 일정을 앞두고 아이가 어떤 이야기를 했나요?",
+      "options": [
+        {
+          "id": "option-1",
+          "text": "궁금한 것을 물었다"
+        },
+        {
+          "id": "option-2",
+          "text": "익숙한 순서를 확인했다"
+        },
+        {
+          "id": "option-3",
+          "text": "특별한 이야기는 없었다"
+        }
+      ],
+      "freeTextHint": "덧붙이고 싶은 생활 장면을 적어 주세요. (선택)"
+    }
+  },
+  {
+    "id": "column-5-v1",
+    "version": "v1",
+    "title": "친구와 함께하는 시간을 관찰해요",
+    "body": "친구와 함께할 때 아이가 먼저 다가가는지, 곁에서 지켜보는지 살펴보세요. 활동과 장소가 달라지면 모습도 달라질 수 있습니다. 평가하기보다 함께한 장면을 구체적으로 적어 상담 때 이야기하세요.",
+    "topic": "peers",
+    "status": "published",
+    "review": {
+      "scope": "developer-demo",
+      "reviewer": "PoC developer",
+      "reviewedAt": "2026-10-03",
+      "note": "데모 콘텐츠 검토. 임상 전문가 검수 아님."
+    },
+    "mockFeatures": {
+      "n": [
+        0.1,
+        0.1,
+        0.88
+      ],
+      "m": [
+        0.08,
+        0.08,
+        0.08,
+        0.08,
+        0.9,
+        0.08
+      ]
+    },
+    "fallbackQuestion": {
+      "questionPrompt": "친구와 함께할 때 아이는 주로 어떤 모습이었나요?",
+      "options": [
+        {
+          "id": "option-1",
+          "text": "먼저 다가갔다"
+        },
+        {
+          "id": "option-2",
+          "text": "곁에서 지켜봤다"
+        },
+        {
+          "id": "option-3",
+          "text": "상황마다 달랐다"
+        }
+      ],
+      "freeTextHint": "덧붙이고 싶은 생활 장면을 적어 주세요. (선택)"
+    }
+  },
+  {
+    "id": "column-6-v1",
+    "version": "v1",
+    "title": "혼자 있는 시간과 함께하는 시간",
+    "body": "혼자 쉬는 시간과 다른 사람과 함께하는 시간은 모두 일상의 일부입니다. 아이가 편안하게 머무르는 상황을 존중하고 함께하고 싶을 때 어떻게 표현하는지 살펴보세요. 최근 생활 모습을 상담에서 나눌 수 있습니다.",
+    "topic": "withdrawal",
+    "status": "published",
+    "review": {
+      "scope": "developer-demo",
+      "reviewer": "PoC developer",
+      "reviewedAt": "2026-10-03",
+      "note": "데모 콘텐츠 검토. 임상 전문가 검수 아님."
+    },
+    "mockFeatures": {
+      "n": [
+        0.1,
+        0.1,
+        0.88
+      ],
+      "m": [
+        0.08,
+        0.08,
+        0.55,
+        0.08,
+        0.08,
+        0.9
+      ]
+    },
+    "fallbackQuestion": {
+      "questionPrompt": "함께하는 활동을 제안했을 때 아이는 어떻게 반응했나요?",
+      "options": [
+        {
+          "id": "option-1",
+          "text": "함께 참여했다"
+        },
+        {
+          "id": "option-2",
+          "text": "혼자 쉬고 싶어 했다"
+        },
+        {
+          "id": "option-3",
+          "text": "상황마다 달랐다"
+        }
+      ],
+      "freeTextHint": "덧붙이고 싶은 생활 장면을 적어 주세요. (선택)"
+    }
+  }
+]

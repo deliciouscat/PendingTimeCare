@@ -1,0 +1,45 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "questionPrompt",
+    "options",
+    "freeTextHint"
+  ],
+  "properties": {
+    "questionPrompt": {
+      "type": "string",
+      "minLength": 8,
+      "maxLength": 150
+    },
+    "freeTextHint": {
+      "type": "string",
+      "maxLength": 150
+    },
+    "options": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "text"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40
+          },
+          "text": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80
+          }
+        }
+      }
+    }
+  }
+}

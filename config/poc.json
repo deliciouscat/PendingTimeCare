@@ -1,0 +1,63 @@
+{
+  "featureSchemaVersion": "v1",
+  "referenceSetVersion": "refs-v1",
+  "taxonomyVersion": "topics-v1",
+  "promptVersion": "question-v1",
+  "algorithmVersion": "xgb-mmr-bm25-v1",
+  "qFeatureOrder": [
+    "attention_problems_t",
+    "total_problems_t",
+    "internalizing_t",
+    "depressed_anxious_t",
+    "social_immaturity_t",
+    "withdrawn_t"
+  ],
+  "referenceIds": [
+    "ref-focus",
+    "ref-emotion",
+    "ref-peers"
+  ],
+  "consultationTypes": [
+    "adhd",
+    "borderline_iq",
+    "internalizing",
+    "depression_anxiety",
+    "social_immaturity",
+    "withdrawn"
+  ],
+  "mode": "mock",
+  "lambda": 0.7,
+  "seed": 42,
+  "qScales": [
+    {
+      "id": "attention_problems_t",
+      "kind": "syndrome",
+      "missing": "null"
+    },
+    {
+      "id": "total_problems_t",
+      "kind": "composite",
+      "missing": "null"
+    },
+    {
+      "id": "internalizing_t",
+      "kind": "composite",
+      "missing": "null"
+    },
+    {
+      "id": "depressed_anxious_t",
+      "kind": "syndrome",
+      "missing": "null"
+    },
+    {
+      "id": "social_immaturity_t",
+      "kind": "syndrome",
+      "missing": "null"
+    },
+    {
+      "id": "withdrawn_t",
+      "kind": "syndrome",
+      "missing": "null"
+    }
+  ]
+}
