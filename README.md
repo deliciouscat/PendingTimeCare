@@ -15,3 +15,5 @@ npm run demo
 OpenRouter 키 하나로 Jev·reranker·질문 생성 모델을 호출한다. 키가 없으면 mock 모드로 실행한다. 모델 등 선택 설정은 `.env.example`을 참고한다.
 
 `npm run demo`가 의존성 설치, 로컬 Convex·인증 준비, 모델 학습, 추천 서버와 웹 실행을 자동으로 처리한다. [http://localhost:3000](http://localhost:3000)에 접속하고, 터미널에 표시되는 데모 계정으로 로그인한다. 종료는 `Ctrl+C`다. `.env`를 변경하면 다시 실행한다.
+
+*XGBoost 모델을 훈련하는 프로세스를 포함하고 있어 약간의 시간이 걸릴 수 있습니다*
