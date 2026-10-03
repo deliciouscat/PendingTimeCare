@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/pendingtimecare/train-pair-v1.schema.json",
+  "title": "One LambdaMART report-column training pair",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "report_id",
+    "family_id",
+    "column_id",
+    "label",
+    "feature_schema_version",
+    "q",
+    "n",
+    "m"
+  ],
+  "properties": {
+    "report_id": { "type": "string", "minLength": 1 },
+    "family_id": { "type": "string", "minLength": 1 },
+    "column_id": { "type": "string", "minLength": 1 },
+    "label": { "type": "integer", "minimum": 0, "maximum": 3 },
+    "feature_schema_version": { "type": "string", "minLength": 1 },
+    "q": {
+      "type": "array",
+      "items": { "type": ["number", "null"] }
+    },
+    "n": {
+      "type": "array",
+      "items": { "type": "number" }
+    },
+    "m": {
+      "type": "array",
+      "items": { "type": "number", "minimum": 0, "maximum": 1 }
+    }
+  }
+}

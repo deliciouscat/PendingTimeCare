@@ -1,0 +1,13 @@
+{
+  "feature_schema_version": "v1",
+  "q_feature_order": [],
+  "reference_document_ids": [],
+  "consultation_type_ids": [],
+  "reference_set_version": "FILL_ME",
+  "taxonomy_version": "FILL_ME",
+  "column_feature_model_version": "FILL_ME",
+  "column_feature_prompt_version": "FILL_ME",
+  "source_mode": "FILL_ME_mock_or_live",
+  "split_seed": 42,
+  "label_rubric_version": "FILL_ME"
+}
