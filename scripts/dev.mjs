@@ -28,6 +28,7 @@ try{
  process.env.CONVEX_AGENT_MODE='anonymous';delete process.env.CONVEX_DEPLOY_KEY;
  if(existsSync('.env.local')){const chosen=parse(readFileSync('.env.local')).CONVEX_DEPLOYMENT;if(chosen&&!chosen.startsWith('anonymous:')&&!chosen.startsWith('local:'))throw new Error('A cloud Convex deployment is configured. Use a separate local checkout for this demo.')}
  try{if((await fetch('http://127.0.0.1:3210/version',{signal:AbortSignal.timeout(1000)})).ok)throw new Error('LOCAL_BACKEND_ALREADY_RUNNING')}catch(e){if(e.message==='LOCAL_BACKEND_ALREADY_RUNNING')throw e}
+ await run('npx',['tsx','scripts/export-columns.ts']);
  await run('uv',['sync','--frozen']);await run('npx',['tsx','scripts/prepare-auth.ts']);
  const rankerPort=process.env.RANKER_PORT??'8000';const webPort=process.env.WEB_PORT??'3000';
  if(!existsSync('.runtime/ranker-token.txt'))writeFileSync('.runtime/ranker-token.txt',randomBytes(32).toString('hex'),{mode:0o600});

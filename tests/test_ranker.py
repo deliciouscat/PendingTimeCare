@@ -5,7 +5,9 @@ import pytest
 from services.ranker.core.model import features, similarity, select
 
 ROOT=Path(__file__).resolve().parents[1]
-COLS=[{'id':c['id'],'body':c['body'],**c['mockFeatures']} for c in json.loads((ROOT/'content/columns.json').read_text())]
+from training.lambdamart.columns import load_columns
+COLUMNS=load_columns()
+COLS=[{'id':c['id'],'body':c['rerankText'],**c['mockFeatures']} for c in COLUMNS]
 
 @pytest.fixture(scope='session')
 def training_artifact(tmp_path_factory):
@@ -16,7 +18,7 @@ def training_artifact(tmp_path_factory):
 
 def test_feature_contract_and_missing():
     matrix=features([60,None,50,55,62,49],COLS)
-    assert matrix.shape==(6,15) and np.isnan(matrix[:,1]).all()
+    assert matrix.shape==(len(COLS),15) and np.isnan(matrix[:,1]).all()
     assert matrix[0,9:].sum()>1
     with pytest.raises(ValueError):features([60]*5,COLS)
     with pytest.raises(ValueError):features([60]*6,[COLS[0],COLS[0]])
@@ -26,14 +28,14 @@ def test_diversity_and_determinism():
     sim=similarity(COLS)
     assert np.allclose(sim,sim.T) and np.allclose(np.diag(sim),0)
     assert np.isfinite(sim).all() and (sim>=0).all() and (sim<=1).all()
-    scores=np.ones(6)
+    scores=np.ones(len(COLS))
     first=select(scores,COLS,8)
-    assert len(first)==6 and len(set(first))==6
+    assert len(first)==len(COLS) and len(set(first))==len(COLS)
     assert first==select(scores,COLS,8)
     assert select(scores,COLS,0)==[]
     assert select([],[],2)==[]
     assert np.array_equal(similarity([{'body':''},{'body':''}]),np.zeros((2,2)))
-    with pytest.raises(ValueError):select([np.nan]*6,COLS,3)
+    with pytest.raises(ValueError):select([np.nan]*len(COLS),COLS,3)
 
 def test_training_split_and_manifest(training_artifact):
     manifest=json.loads((training_artifact/'manifest.json').read_text())

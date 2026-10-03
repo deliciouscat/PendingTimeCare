@@ -1,7 +1,7 @@
 import {internalAction,internalQuery,internalMutation} from '../_generated/server';
 import {internal} from '../_generated/api';
 import {v} from 'convex/values';
-import columns from '../../content/columns.json';
+import columns from '../../content/columns.generated';
 import config from '../../config/poc.json';
 import references from '../../content/references.json';
 import {columnFeatures,generateQuestion,JEV_ENDPOINT,JEV_DEFAULT_MODEL,RERANK_ENDPOINT,rerankModel,type Column} from '../adapters/providers';

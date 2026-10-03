@@ -5,7 +5,7 @@ import {login,session,cookie} from './auth';
 import reports from '../../../fixtures/synthetic/reports.json';
 const schema=buildSchema(`
  type User {email:String!}
- type Sample {id:String!,name:String!,q:[Float]!,featureSchemaVersion:String!}
+ type Sample {id:String!,familyId:String!,name:String!,q:[Float]!,featureSchemaVersion:String!,observationTopics:[String!]!,consultationNote:String!,provenance:String!}
  type Assessment {id:ID!,status:String!,consultationAt:Float!,receivedAt:Float!,demo:Boolean!,fallbackReason:String}
  type TimelineItem {id:ID!,kind:String!,title:String!,scheduledAt:Float!,status:String!,withGlossary:Boolean!,answered:Boolean!,skipped:Boolean!}
  type Option {id:String!,text:String!}
@@ -32,7 +32,7 @@ export async function handle(request:Request){
   me:()=>user?{email:user.email}:null,
   login:async({email,password}:any)=>{if(typeof password!=='string'||password.length>128||email.length>128)throw new Error('INVALID_LOGIN');const token=await login(email,password);setCookie=cookie(token);return{email}},
   logout:()=>{setCookie=cookie('');return true},
-  samples:()=>{requireUser();return reports.map(({id,name,q,featureSchemaVersion})=>({id,name,q,featureSchemaVersion}))},
+  samples:()=>{requireUser();return reports},
   assessments:()=>{requireUser();return client.query(api.assessments.list,{})},
   assessment:({id}:any)=>{requireUser();return client.query(api.assessments.get,{id})},
   careTimeline:({assessmentId}:any)=>{requireUser();return client.query(api.care.timeline,{assessmentId})},

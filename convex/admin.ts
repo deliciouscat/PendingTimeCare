@@ -3,10 +3,12 @@ import {v} from 'convex/values';
 import {validateQuestion} from '../contracts/validation';
 import {internal} from './_generated/api';
 export const seed=internalMutation({args:{columns:v.array(v.any())},handler:async(ctx,{columns})=>{
+ const currentIds=new Set(columns.map(c=>c.id));
+ for(const old of await ctx.db.query('columns').collect())if(!currentIds.has(old.columnId)&&old.status==='published')await ctx.db.patch(old._id,{status:'archived'});
  for(const c of columns){
   if(c.n.length!==3||c.m.length!==6||c.n.some((x:number)=>!Number.isFinite(x))||c.m.some((x:number)=>!Number.isFinite(x)||x<0||x>1))throw new Error('INVALID_FEATURE');
   const old=await ctx.db.query('columns').withIndex('by_column',q=>q.eq('columnId',c.id)).unique();
-  const data={columnId:c.id,version:c.version,title:c.title,body:c.body,topic:c.topic,status:c.status,review:c.review,n:c.n,m:c.m,featureVersion:c.cacheKey??'v1',events:c.events,...(c.draftVersion?{questionDraftVersion:c.draftVersion}:{})};
+  const data={columnId:c.id,version:c.version,title:c.title,body:c.body,...(c.rerankText?{rerankText:c.rerankText}:{}),...(c.sourceFile?{sourceFile:c.sourceFile}:{}),topic:c.topic,status:c.status,review:c.review,n:c.n,m:c.m,featureVersion:c.cacheKey??'v1',events:c.events,...(c.draftVersion?{questionDraftVersion:c.draftVersion}:{})};
   if(old)await ctx.db.patch(old._id,data);else await ctx.db.insert('columns',data);
   const existing=await ctx.db.query('questions').withIndex('by_column',q=>q.eq('columnId',c.id)).collect();
   const fallback=validateQuestion(c.fallbackQuestion);

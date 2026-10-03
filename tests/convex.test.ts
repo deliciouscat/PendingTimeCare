@@ -3,7 +3,8 @@ import {convexTest} from 'convex-test';
 import {describe,it,expect,vi,afterEach} from 'vitest';
 import schema from '../convex/schema';
 import {api,internal} from '../convex/_generated/api';
-import columns from '../content/columns.json';
+import {loadColumns} from '../content/load-columns';
+const columns=await loadColumns();
 const modules=import.meta.glob('../convex/**/*.{ts,js}');
 afterEach(()=>vi.useRealTimers());
 async function setup(){

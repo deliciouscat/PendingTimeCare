@@ -46,3 +46,6 @@ test-results/
 *.log
 .DS_Store
 Thumbs.db
+
+# Markdown에서 생성하는 Convex 콘텐츠 모듈
+content/columns.generated.ts

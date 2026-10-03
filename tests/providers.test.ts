@@ -1,6 +1,7 @@
 import {describe,it,expect,vi,afterEach} from 'vitest';
 import {columnFeatures,generateQuestion,postJson,type Column} from '../convex/adapters/providers';
-import columns from '../content/columns.json';
+import {loadColumns} from '../content/load-columns';
+const columns=await loadColumns();
 import config from '../config/poc.json';
 afterEach(()=>{vi.unstubAllEnvs();vi.unstubAllGlobals()});
 describe('provider adapters selected from environment keys',()=>{
@@ -16,7 +17,7 @@ describe('provider adapters selected from environment keys',()=>{
   const f=await columnFeatures(columns[0] as Column);expect(f.n).toEqual([0.9,0.1,0.3]);expect(f.m.reduce((a,b)=>a+b,0)).toBeGreaterThan(1);expect(f.events.every(e=>e.mode==='live')).toBe(true);
   const q=await generateQuestion(columns[0] as Column);expect(q.status).toBe('draft');expect(q.event.mode).toBe('live');
   expect(calls.map(c=>c.auth)).toEqual(['Bearer test-router','Bearer test-router','Bearer test-router']);
-  expect(calls[0].url).toBe('https://openrouter.ai/api/v1/systemone');expect(calls[0].payload.model).toBe('~typesafe/jev-latest');expect(calls[0].payload.state).toBe(columns[0].body);expect(calls[1].url).toBe('https://openrouter.ai/api/v1/rerank');expect(calls[1].payload.model).toBe('qwen/qwen3-reranker-8b');expect(calls[1].payload.top_n).toBe(3);expect(calls[1].payload).not.toHaveProperty('top_k');expect(calls[1].payload.query).toBe(columns[0].body);
+  expect(calls[0].url).toBe('https://openrouter.ai/api/v1/systemone');expect(calls[0].payload.model).toBe('~typesafe/jev-latest');expect(calls[0].payload.state).toBe(columns[0].rerankText);expect(calls[1].url).toBe('https://openrouter.ai/api/v1/rerank');expect(calls[1].payload.model).toBe('qwen/qwen3-reranker-8b');expect(calls[1].payload.top_n).toBe(3);expect(calls[1].payload).not.toHaveProperty('top_k');expect(calls[1].payload.query).toBe(columns[0].rerankText);
   expect(calls[2].payload.messages[1].content).not.toContain('guardian');
  });
  it.each(['qwen/qwen3-reranker-8b','voyageai/rerank-3','rerank-3'])('one OpenRouter key supports reranker %s',async(model)=>{

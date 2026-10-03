@@ -22,7 +22,7 @@ export const run=internalAction({args:{assessmentId:v.id('assessments')},handler
  const k=planSchedule(a.receivedAt,a.consultationAt,Date.now(),columns.length,a.demo).filter(s=>s.kind==='column').length;
  let ranked:any[],modelVersion:string,algorithmVersion:string,fallbackReason:string|undefined;
  try{
-  const response=await fetch(`${process.env.RANKER_URL}/rank`,{method:'POST',headers:{Authorization:`Bearer ${process.env.RANKER_TOKEN}`,'Content-Type':'application/json'},body:JSON.stringify({requestId:assessmentId,featureSchemaVersion:'v1',referenceSetVersion:'refs-v1',taxonomyVersion:'topics-v1',q:a.q,candidates:columns.map(c=>({id:c.columnId,body:c.body,n:c.n,m:c.m})),k}),signal:AbortSignal.timeout(10000)});
+  const response=await fetch(`${process.env.RANKER_URL}/rank`,{method:'POST',headers:{Authorization:`Bearer ${process.env.RANKER_TOKEN}`,'Content-Type':'application/json'},body:JSON.stringify({requestId:assessmentId,featureSchemaVersion:'v1',referenceSetVersion:'refs-v1',taxonomyVersion:'topics-v1',q:a.q,candidates:columns.map(c=>({id:c.columnId,body:c.rerankText??c.body,n:c.n,m:c.m})),k}),signal:AbortSignal.timeout(10000)});
   if(!response.ok)throw new Error('RANKER_UNAVAILABLE');const value=await response.json();
   if(value.requestId!==assessmentId||!Array.isArray(value.items)||value.items.length!==Math.min(k,columns.length)||new Set(value.items.map((x:any)=>x.columnId)).size!==value.items.length||value.items.some((r:any)=>!columns.some(c=>c.columnId===r.columnId)||!Number.isFinite(r.score)))throw new Error('INVALID_RANK_RESULT');
   ranked=value.items;modelVersion=value.modelVersion;algorithmVersion=value.algorithmVersion;

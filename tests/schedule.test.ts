@@ -1,7 +1,8 @@
 import {describe,it,expect} from 'vitest';
 import {planSchedule} from '../convex/workflows/schedule';
 import {validateQuestion} from '../contracts/validation';
-import columns from '../content/columns.json';
+import {fallbackQuestion} from '../content/column-metadata';
+const columns=[{fallbackQuestion}];
 const day=86400000,now=Date.parse('2026-10-03T09:00:00+09:00');
 describe('schedule policy',()=>{
  it('reproduces 6/3/2/1 day and past examples',()=>{
