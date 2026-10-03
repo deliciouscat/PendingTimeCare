@@ -6,7 +6,8 @@ import reports from '../../../fixtures/synthetic/reports.json';
 const schema=buildSchema(`
  type User {email:String!}
  type Sample {id:String!,familyId:String!,name:String!,q:[Float]!,featureSchemaVersion:String!,observationTopics:[String!]!,consultationNote:String!,provenance:String!}
- type Assessment {id:ID!,status:String!,consultationAt:Float!,receivedAt:Float!,demo:Boolean!,fallbackReason:String}
+ type PreparationProgress {catalog:String!,ranking:String!,questions:String!,linking:String!,scheduling:String!,selectedColumnCount:Int!,questionTotal:Int!,questionCompleted:Int!,questionFailed:Int!}
+ type Assessment {id:ID!,status:String!,consultationAt:Float!,receivedAt:Float!,demo:Boolean!,fallbackReason:String,progress:PreparationProgress}
  type TimelineItem {id:ID!,kind:String!,title:String!,scheduledAt:Float!,status:String!,withGlossary:Boolean!,answered:Boolean!,skipped:Boolean!}
  type Option {id:String!,text:String!}
  type Question {id:ID!,version:String!,questionPrompt:String!,options:[Option!]!,freeTextHint:String!}

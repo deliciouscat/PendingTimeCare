@@ -52,3 +52,46 @@ describe('provider adapters selected from environment keys',()=>{
   await expect(columnFeatures(columns[0] as Column)).rejects.toThrow('INVALID_PROVIDER_VECTOR');
  });
 });
+
+describe('personalized Jinja question input',()=>{
+ it('repairs truncated output with a larger token budget',async()=>{
+  vi.stubEnv('API_MODE','live');vi.stubEnv('OPENROUTER_API_KEY','router');vi.stubEnv('RANKER_URL','http://ranker');vi.stubEnv('RANKER_TOKEN','secret');
+  const budgets:number[]=[],repairs:boolean[]=[];
+  vi.stubGlobal('fetch',vi.fn(async(url:string,init:any)=>{
+   const payload=JSON.parse(init.body);
+   if(url.endsWith('/question-input')){repairs.push(payload.repair);return Response.json({promptVersion:'question-child-state-v2',messages:[{role:'system',content:'지침'},{role:'user',content:'상태와 칼럼'}]});}
+   budgets.push(payload.max_tokens);
+   return Response.json({choices:[{finish_reason:budgets.length===1?'length':'stop',message:{content:budgets.length===1?'{':JSON.stringify(columns[0].fallbackQuestion)}}]});
+  }));
+  await expect(generateQuestion(columns[0],{q:[50,50,50,50,50,50]})).resolves.toHaveProperty('promptVersion','question-child-state-v2');
+  expect(budgets).toEqual([2000,4000]);expect(repairs).toEqual([false,true]);
+ });
+ it('identifies repeated output truncation separately from unsafe content',async()=>{
+  vi.stubEnv('API_MODE','live');vi.stubEnv('OPENROUTER_API_KEY','router');
+  vi.stubGlobal('fetch',vi.fn(async()=>Response.json({choices:[{finish_reason:'length',message:{content:'{'}}]})));
+  await expect(generateQuestion(columns[0])).rejects.toThrow('QUESTION_OUTPUT_TRUNCATED');
+ });
+ it('sends child scores and column to renderer and forwards rendered messages to LLM',async()=>{
+  vi.stubEnv('API_MODE','live');vi.stubEnv('OPENROUTER_API_KEY','router');vi.stubEnv('RANKER_URL','http://ranker');vi.stubEnv('RANKER_TOKEN','ranker-secret');
+  const q=[65,50,55,60,45,null];
+  const messages=[{role:'system',content:'질문 생성 지침'},{role:'user',content:'아이 상태: 주의집중 65 / 칼럼: 또래 관계'}];
+  const fetch=vi.fn(async(url:string,init:any)=>{
+   const data=JSON.parse(init.body);
+   if(url==='http://ranker/question-input'){
+    expect(init.headers.Authorization).toBe('Bearer ranker-secret');expect(data.q).toEqual(q);
+    expect(data.column).toEqual({title:columns[0].title,body:columns[0].rerankText});expect(data).not.toHaveProperty('assessmentId');
+    return Response.json({promptVersion:'question-child-state-v2',messages});
+   }
+   expect(data.messages).toEqual(messages);expect(init.headers.Authorization).toBe('Bearer router');
+   return Response.json({choices:[{message:{content:JSON.stringify(columns[0].fallbackQuestion)}}]});
+  });vi.stubGlobal('fetch',fetch);
+  const result=await generateQuestion(columns[0] as Column,{q});
+  expect(result.promptVersion).toBe('question-child-state-v2');expect(result.status).toBe('draft');expect(fetch).toHaveBeenCalledTimes(2);
+ });
+ it('fails instead of silently dropping child state if prompt renderer is unavailable',async()=>{
+  vi.stubEnv('API_MODE','live');vi.stubEnv('OPENROUTER_API_KEY','router');vi.stubEnv('RANKER_URL','');
+  const fetch=vi.fn();vi.stubGlobal('fetch',fetch);
+  await expect(generateQuestion(columns[0] as Column,{q:[50,50,50,50,50,50]})).rejects.toThrow('MISSING_PROMPT_SERVICE');
+  expect(fetch).not.toHaveBeenCalled();
+ });
+});

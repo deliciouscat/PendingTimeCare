@@ -1,0 +1,29 @@
+{
+  "version": "k-cbcl-supplied-report-v1",
+  "source": "사용자가 제공한 K-CBCL 검사 결과 보고서(가상 사례, 검사일 2026.03.12)",
+  "basis": "보호자 보고형 선별 도구. T점수는 연령·성별 규준에 따른 평균 50, 표준편차 10의 수치다. 단일 검사로 진단을 확정할 수 없으며 관찰 맥락과 상황별 차이가 반영될 수 있다.",
+  "ranges": {
+    "composite": "제공 보고서 기준: 정상 T<60, 준임상 60≤T<63, 임상 T≥63.",
+    "syndrome": "제공 보고서 기준: 정상 T<60, 준임상 60≤T<70, 임상 T≥70.",
+    "competence": "제공 보고서 기준: 총 사회능력 임상 기준 T≤33, 사회능력 하위척도 T≤30. 문제행동 척도와 점수 방향이 다르다.",
+    "special": "제공 보고서에는 특수척도 점수 해석 임계값이 없다. 임의로 적용하지 않는다."
+  },
+  "scales": {
+    "attention_problems_t": {"label": "주의집중 문제 T점수", "kind": "syndrome", "group": "혼합 증후군", "description": "11문항. 주의집중과 산만함 관련 영역이며 학교·학습 장면의 관찰과 연결한다. 특정 아이가 실제로 산만하다고 단정하지 않는다."},
+    "total_problems_t": {"label": "총 문제 T점수", "kind": "composite", "group": "문제행동 종합 지표", "description": "전체 117문항의 총 문제행동 수준. 총점만으로 개별 정서·주의집중 영역의 어려움을 배제하지 않는다."},
+    "internalizing_t": {"label": "내재화 T점수", "kind": "composite", "group": "문제행동 종합 지표", "description": "위축·신체증상·우울/불안을 합친 정서 관련 종합 영역. 하위척도 점수를 합산해 T점수를 새로 계산하지 않는다."},
+    "depressed_anxious_t": {"label": "우울/불안 T점수", "kind": "syndrome", "group": "내재화 증후군", "description": "14문항. 걱정·긴장·불안 관련 정서 반응을 다루며 새로운 상황에서의 모습을 관찰할 수 있다. 반응이 실제로 증가했다고 추정하지 않는다."},
+    "social_immaturity_t": {"label": "사회적 미성숙 T점수", "kind": "syndrome", "group": "혼합 증후군", "description": "8문항. 연령에 비해 미성숙한 행동·의존적 양상과 또래 관계 형성·유지 관련 영역. 사회능력 척도의 사회성과는 별개다."},
+    "withdrawn_t": {"label": "위축 T점수", "kind": "syndrome", "group": "내재화 증후군", "description": "9문항. 혼자 있기 선호·소극적 태도 등 사회적 위축 관련 영역. 선호나 태도를 아이의 확정된 행동으로 제시하지 않는다."},
+    "externalizing_t": {"label": "외현화 문제", "kind": "composite", "group": "문제행동 종합 지표", "description": "비행·공격성 관련 종합 영역."},
+    "somatic_complaints_t": {"label": "신체증상", "kind": "syndrome", "group": "내재화 증후군", "description": "9문항. 내재화 문제의 하위척도."},
+    "thought_problems_t": {"label": "사고의 문제", "kind": "syndrome", "group": "혼합 증후군", "description": "7문항. 보고서에는 세부 관찰 소견이 없어 임의로 보완하지 않는다."},
+    "delinquent_t": {"label": "비행", "kind": "syndrome", "group": "외현화 증후군", "description": "13문항. 외현화 문제의 하위척도."},
+    "aggressive_t": {"label": "공격성", "kind": "syndrome", "group": "외현화 증후군", "description": "20문항. 외현화 문제의 하위척도."},
+    "social_competence_t": {"label": "사회성", "kind": "competence", "group": "사회능력 척도", "description": "사회능력 하위척도. 문제행동의 사회적 미성숙과 구분한다."},
+    "academic_performance_t": {"label": "학업수행", "kind": "competence", "group": "사회능력 척도", "description": "사회능력 하위척도. 제공 보고서에서는 초등학생 이상에 적용 가능하다고 설명한다."},
+    "total_competence_t": {"label": "총 사회능력", "kind": "competence", "group": "사회능력 척도", "description": "사회능력 종합점수. 문제행동 총점과 구분한다."},
+    "emotional_instability_t": {"label": "정서불안정", "kind": "special", "group": "특수 척도", "description": "한국판 고유 6–11세 특수척도, 10문항. 잘 운다·분노발작·감정 급변 등 정서 불안정 관련 영역. 적용 연령이라고 자동으로 실시된 것은 아니다."},
+    "sex_problems_t": {"label": "성문제", "kind": "special", "group": "특수 척도", "description": "4–11세 특수척도. 제공 보고서에서는 임상적 필요에 따라 선택 적용한다고 설명한다."}
+  }
+}

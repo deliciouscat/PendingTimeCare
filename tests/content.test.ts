@@ -1,5 +1,5 @@
 import {describe,it,expect} from 'vitest';
-import {readFile} from 'node:fs/promises';
+import {readFile,readdir} from 'node:fs/promises';
 import {createElement} from 'react';
 import {renderToStaticMarkup} from 'react-dom/server';
 import {loadColumns,parseColumn} from '../content/load-columns';
@@ -7,7 +7,9 @@ import ColumnMarkdown from '../apps/web/ui/ColumnMarkdown';
 
 describe('Markdown is the article source',()=>{
  it('loads all supplied files without substituting the old JSON articles',async()=>{
-  const columns=await loadColumns();expect(columns).toHaveLength(3);
+  const sourceFiles=(await readdir('content/columns')).filter(name=>name.endsWith('.md'));
+  const columns=await loadColumns();expect(columns).toHaveLength(sourceFiles.length);
+  expect(new Set(columns.map(c=>c.sourceFile))).toEqual(new Set(sourceFiles.map(name=>`content/columns/${name}`)));
   for(const c of columns){
    const original=await readFile(c.sourceFile,'utf8');
    expect(c.body).toBe(original.slice(original.indexOf('\n')).trim());

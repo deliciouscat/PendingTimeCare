@@ -134,7 +134,7 @@ GraphQL과 Convex 양쪽에서 권한을 검증한다. 보고서 원문, 관련�
 
 - [ ] 칼럼 feature는 게시 준비 때 계산한다. reranker 결과는 반환 순위가 아니라 기준문서 ID 순서로 재배열하고 Noul은 합을 정규화하지 않는다.
 - [ ] 캐시 키는 칼럼 본문 해시, model/prompt/taxonomy/referenceSet/featureSchema 버전을 포함한다.
-- [ ] relevance label 0/1/2/3은 상담 노트와 별도 rubric에서 정한다. Jev 출력값을 정답으로 복제하지 않는다.
+- [ ] 상담 노트도 칼럼과 동일한 reranker·Jev N/M 축으로 featurize한다. 두 문서의 block cosine 유사도 순위를 relevance label 0/1/2/3으로 변환하며 observationTopics는 정답에 쓰지 않는다.
 - [ ] XGBRanker `rank:ndcg`를 보고서별 query group으로 1회 학습한다. 학습/서빙은 `services/ranker/core`의 동일 feature builder를 사용한다.
 - [ ] XGBRanker 단독과 XGBRanker+MMR의 NDCG@3·주제 coverage·문서 간 유사도·처리 시간을 동일 held-out 데이터로 비교한다. BM25는 후보 칼럼 간 유사도를 계산해 MMR의 다양성 penalty로만 사용한다.
 - [ ] MMR λ=0.7. XGBRanker 관련도와 칼럼 간 BM25 유사도를 각각 [0,1]로 정규화한다. BM25는 음수를 0으로 자른 뒤 방향별로 정규화하고 양방향 평균으로 대칭 유사도를 만든다. 정규화 분모가 0이면 유사도는 0, 관련도가 모두 같으면 같은 정규화 값을 사용한다. 동점은 columnId로 결정한다.
@@ -240,7 +240,7 @@ pending / processing → cancelled
 ## 9. PoC 이후
 
 - **예약 관리·제출:** 상담 변경/취소 API·UI와 전체 재예약을 구현한다. 기획안 PDF, 공개 배포본, 제출 절차를 별도로 마무리한다.
-- **실데이터·전문가 검토:** 사용할 권한이 확보된 보고서–상담 노트 pair와 전문가 relevance label을 수집한다. rubric 일치도와 추천 타당성을 검토하고 합성 데이터 편향을 평가한다.
+- **실데이터·전문가 검토:** 사용할 권한이 확보된 보고서–상담 노트 pair와 전문가 relevance label을 수집한다. 자동 생성한 약한 지도 신호와 전문가 평가의 일치도·추천 타당성을 검토하고 합성 데이터 편향을 평가한다.
 - **운영 검수:** 칼럼·질문 검수 UI, 승인 이력, 철회와 예약 영향 처리를 추가한다. 개발자 데모 검토를 임상 전문가 승인으로 대체한다.
 - **상담 연계:** 응답 이력을 상담사가 열람하는 F6를 구현한다. 요약 생성 도입 시 원문 추적과 별도 검토를 설계한다.
 - **실제 알림:** notification adapter를 추가하고 공급자 idempotency key·전달 실패·수신 동의 정책을 연결한다. sent와 delivered를 분리한다.

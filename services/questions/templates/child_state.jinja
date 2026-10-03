@@ -1,0 +1,8 @@
+## 아이 상태 — 보고서 수령 시점의 검사 수치
+이 정보는 현재 행동에 대한 확정적 설명이 아니라 입력 보고서의 수치 기록이다.
+{% for scale in scales %}
+- {{ scale.label }} ({{ scale.id }}): {{ '미제공' if scale.value is none else scale.value }}
+  척도 종류: {{ scale.group }} / {{ '종합척도' if scale.kind == 'composite' else '개별 증후군 척도' }}
+  의미·관찰 맥락: {{ scale.description }}
+{% endfor %}
+생활 관찰·나이·최근 변화: 미제공. 임의로 보완하지 않는다.

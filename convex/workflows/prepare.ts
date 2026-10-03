@@ -4,7 +4,7 @@ import {v} from 'convex/values';
 import columns from '../../content/columns.generated';
 import config from '../../config/poc.json';
 import references from '../../content/references.json';
-import {columnFeatures,generateQuestion,JEV_ENDPOINT,JEV_DEFAULT_MODEL,RERANK_ENDPOINT,rerankModel,type Column} from '../adapters/providers';
+import {columnFeatures,FEATURE_PROMPT_VERSION,generateQuestion,JEV_ENDPOINT,JEV_DEFAULT_MODEL,RERANK_ENDPOINT,rerankModel,type Column} from '../adapters/providers';
 export const cached=internalQuery({args:{key:v.string()},handler:async(ctx,{key})=>(await ctx.db.query('preparations').withIndex('by_key',q=>q.eq('key',key)).unique())?.data??null});
 export const store=internalMutation({args:{key:v.string(),data:v.any()},handler:async(ctx,args)=>{const old=await ctx.db.query('preparations').withIndex('by_key',q=>q.eq('key',args.key)).unique();if(!old)await ctx.db.insert('preparations',args)}});
 export const run=internalAction({args:{},handler:async(ctx):Promise<any[]>=>{
@@ -14,7 +14,7 @@ export const run=internalAction({args:{},handler:async(ctx):Promise<any[]>=>{
  const prepared=[];
  for(const column of columns){
   const modes={jev:mode!=='mock'&&!!process.env.OPENROUTER_API_KEY,reranker:mode!=='mock'&&!!process.env.OPENROUTER_API_KEY,question:mode!=='mock'&&!!process.env.OPENROUTER_API_KEY};
-  const hashInput=JSON.stringify({column,config,references,modes,jevEndpoint:JEV_ENDPOINT,rerankEndpoint:RERANK_ENDPOINT,models:[process.env.JEV_MODEL||JEV_DEFAULT_MODEL,rerankModel(),process.env.QUESTION_MODEL||'openai/gpt-4o-mini']});
+  const hashInput=JSON.stringify({column,config,references,modes,featurePromptVersion:FEATURE_PROMPT_VERSION,jevEndpoint:JEV_ENDPOINT,rerankEndpoint:RERANK_ENDPOINT,models:[process.env.JEV_MODEL||JEV_DEFAULT_MODEL,rerankModel(),process.env.QUESTION_MODEL||'openai/gpt-4o-mini']});
   const digest=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(hashInput));const key=Array.from(new Uint8Array(digest)).map(x=>x.toString(16).padStart(2,'0')).join('');
   const cached:any=await ctx.runQuery(internal.workflows.prepare.cached,{key});
   if(cached){prepared.push({...cached,events:cached.events.map((e:any)=>({...e,cacheHit:true})),...(cached.draft?{draft:{...cached.draft,event:{...cached.draft.event,cacheHit:true}}}:{})});continue}

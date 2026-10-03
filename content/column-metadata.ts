@@ -1,4 +1,4 @@
-// Demo-only relevance rubric and fallback questions; article text lives in Markdown.
+// Demo-only column feature fixtures and fallback questions; article text lives in Markdown.
 export const columnMetadata:Record<string,{topic:string;topics:string[];n:number[];m:number[]}>= {
  '1':{topic:'peers',topics:['attention','peers'],n:[.8,.25,.8],m:[.8,.1,.25,.2,.8,.25]},
  '2':{topic:'worry',topics:['learning','worry'],n:[.7,.9,.35],m:[.3,.8,.9,.85,.3,.3]},

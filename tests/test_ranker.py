@@ -13,7 +13,7 @@ COLS=[{'id':c['id'],'body':c['rerankText'],**c['mockFeatures']} for c in COLUMNS
 def training_artifact(tmp_path_factory):
     from training.lambdamart.pipeline import run
     output=tmp_path_factory.mktemp('training')/'model'
-    run(output)
+    run(output, feature_mode='mock')
     return output
 
 def test_feature_contract_and_missing():
@@ -44,6 +44,16 @@ def test_training_split_and_manifest(training_artifact):
     assert not (groups[0]&groups[1] or groups[1]&groups[2] or groups[0]&groups[2])
     assert len(manifest['featureOrder'])==15
     assert all('bm25' not in name.lower() for name in manifest['featureOrder'])
+    assert manifest['supervisionVersion']=='consultation-nm-cosine-rank-v1'
+    assert 'labelRubric' not in manifest
+    notes=json.loads((training_artifact/'consultation-features.json').read_text())
+    assert len(notes)==20 and all(len(n['n'])==3 and len(n['m'])==6 for n in notes)
+    assert all(n['sourceMode']=='mock' for n in notes)
+    from training.lambdamart.supervision import derive_relevance
+    candidates=json.loads((training_artifact/'columns.json').read_text())
+    rows=[json.loads(line) for line in (training_artifact/'dataset'/'train.jsonl').read_text().splitlines()]
+    first=notes[0];expected=derive_relevance(first,candidates)['labels']
+    assert [row['label'] for row in rows if row['report_id']==first['reportId']]==expected
 
 def test_api_auth_and_model(monkeypatch,training_artifact):
     monkeypatch.setenv('RANKER_TOKEN','test-token')
@@ -58,6 +68,12 @@ def test_api_auth_and_model(monkeypatch,training_artifact):
         good=client.post('/rank',json=payload,headers={'Authorization':'Bearer test-token'})
         assert good.status_code==200 and len(good.json()['items'])==3
         assert good.json()['requestId']=='case-1'
+        prompt_payload={'q':payload['q'],'column':{'title':'또래 관계','body':'생활 관찰 칼럼'}}
+        assert client.post('/question-input',json=prompt_payload).status_code==401
+        rendered=client.post('/question-input',json=prompt_payload,headers={'Authorization':'Bearer test-token'})
+        assert rendered.status_code==200 and rendered.json()['promptVersion']=='question-child-state-v2'
+        assert '주의집중 문제' in rendered.json()['messages'][1]['content']
+        assert client.post('/question-input',json={**prompt_payload,'q':[101]*6},headers={'Authorization':'Bearer test-token'}).status_code==422
         bad={**payload,'featureSchemaVersion':'wrong'}
         assert client.post('/rank',json=bad,headers={'Authorization':'Bearer test-token'}).status_code==422
 

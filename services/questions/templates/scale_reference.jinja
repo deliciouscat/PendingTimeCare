@@ -1,0 +1,15 @@
+## 척도 참고 정보 — 제공 보고서의 설명
+출처: {{ reference.source }}
+{{ reference.basis }}
+{% for kind, criteria in reference.ranges.items() %}
+{{ criteria }}
+{% endfor %}
+종합척도와 개별 증후군 척도의 임계값을 혼용하지 않는다. 예를 들어 T=63의 구간은 척도 종류에 따라 다르다.
+이 기준은 질문 주제의 맥락이며, 아이에게 임상 판정·위험도·개입 필요성을 전달하는 근거로 사용하지 않는다.
+규준·점수는 제공 자료 기준이며 다른 검사판·연령군에 보편적으로 적용된다고 가정하지 않는다.
+
+현재 Q 입력에 없는 척도(이름과 정의만 제공, 점수·실시 여부 미제공):
+{% for scale in unavailable_scales %}
+{{ scale.label }} / {{ scale.group }}: {{ scale.description }}
+{% endfor %}
+입력에 없는 점수를 0·정상으로 처리하지 않는다. 미실시와 단순 미제공도 구분하며 임의로 판정하지 않는다.

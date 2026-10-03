@@ -14,6 +14,7 @@ import type * as admin from "../admin.js";
 import type * as assessments from "../assessments.js";
 import type * as care from "../care.js";
 import type * as crons from "../crons.js";
+import type * as questionAvailability from "../questionAvailability.js";
 import type * as workflows_delivery from "../workflows/delivery.js";
 import type * as workflows_prepare from "../workflows/prepare.js";
 import type * as workflows_process from "../workflows/process.js";
@@ -32,6 +33,7 @@ declare const fullApi: ApiFromModules<{
   assessments: typeof assessments;
   care: typeof care;
   crons: typeof crons;
+  questionAvailability: typeof questionAvailability;
   "workflows/delivery": typeof workflows_delivery;
   "workflows/prepare": typeof workflows_prepare;
   "workflows/process": typeof workflows_process;

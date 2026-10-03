@@ -9,5 +9,5 @@
   "column_feature_prompt_version": "FILL_ME",
   "source_mode": "FILL_ME_mock_or_live",
   "split_seed": 42,
-  "label_rubric_version": "FILL_ME"
+  "supervision_version": "FILL_ME"
 }

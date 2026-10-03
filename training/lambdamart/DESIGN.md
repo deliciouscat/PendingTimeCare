@@ -1,35 +1,41 @@
 # LambdaMART 학습
 
-> 현재는 디렉터리와 데이터 계약만 정의한다. 학습 코드와 모델은 아직 없다. 전체 흐름은 [ARCHITECTURE.md](../../ARCHITECTURE.md), 구현 순서는 [ROADMAP.md](../../ROADMAP.md)를 따른다.
+## 구현과 데이터 흐름
 
-## 책임
+`pipeline.py`가 `scripts/prepare-training-features.ts`를 실행한다. 칼럼 본문과 가상 상담 보고서의 `consultationNote` 모두 같은 `documentFeatures`를 사용한다.
 
-`trainset/`의 보고서별 후보 칼럼 데이터를 읽어 XGBRanker(LambdaMART)를 학습·평가한다. 학습 결과와 feature manifest를 `artifacts/`로 내보낸다.
+- **N:** 문서 본문을 query, 공통 기준문서 3개를 documents로 reranker에 전달한다. 반환 순서를 기준문서 ID 순서로 복원한다.
+- **M:** 같은 문서 본문을 Jev state로 전달하고 상담유형 6개를 독립 Noul로 평가한다. 합계 1 정규화는 하지 않는다.
+- **Q:** 검사 보고서의 수치 6개. 상담 보고서와 연결된 원래 Q를 사용한다.
 
-## 예정 컴포넌트
+`API_MODE=auto`는 `.env`의 API 키가 있으면 live를 사용한다. `--feature-mode live`는 키 누락·공급자 오류에서 실패하며 mock으로 바꾸지 않는다. mock에서는 본문과 기준문서·유형 설명 간 lexical overlap으로 테스트용 N·M을 만든다. 이는 실제 Jev·reranker 결과가 아니다. `observationTopics`와 칼럼 topic 태그는 학습 label에 사용하지 않는다.
 
-| 컴포넌트 | 입력 → 출력 |
-|---|---|
-| Dataset loader/validator | `trainset/manifest.json` + split별 JSONL → 검증된 보고서별 후보 묶음 |
-| Feature builder | Q, N, M 배열 + manifest 순서 → 고정 길이 수치 벡터. 추론 시에는 `services/ranker/core`와 같은 구현을 사용 |
-| Trainer | 보고서별 후보 묶음 + 관련도 label → XGBRanker 모델 |
-| Evaluator | 모델 + validation/test 묶음 + 후보 칼럼 본문/토큰 snapshot → XGBRanker 단독·MMR 적용 결과의 NDCG@3·다양성, 사용한 split·버전 기록 |
-| Exporter | 모델·평가 결과·feature 순서 → `artifacts/`의 버전별 결과 |
+내용·모델·프롬프트·축·mock/live를 cache key에 포함하고 `.runtime/training-feature-cache/`에 저장한다. 동일한 문서는 API 재호출 없이 재사용한다.
 
-## 데이터 흐름과 경계
+## 약한 지도 신호
 
-`content/`의 기준문서·칼럼, `config/`의 taxonomy·feature 축을 이용해 Convex 게시 준비 흐름이 N/M feature를 생성한다. `scripts/`가 이를 버전 고정 snapshot으로 내보내고, 공개 가능한 합성 보고서의 Q·label과 결합해 `trainset/`에 입력을 작성한다. 학습 모듈은 `trainset/`을 읽고 `artifacts/`에만 결과를 쓴다. 운영 사용자 데이터나 Convex DB를 학습 코드가 직접 조회하지 않는다.
+`supervision.py`에서 상담 보고서와 각 후보 칼럼의 공통 의미 좌표를 비교한다.
 
-`trainset/`에는 지금 [README.md](../../trainset/README.md), [schema.template.json](../../trainset/schema.template.json), [manifest.template.json](../../trainset/manifest.template.json)만 있다. 실제 `manifest.json`과 `train.jsonl`·`validation.jsonl`·`test.jsonl`은 데이터 준비 단계에서 생성한다.
+```text
+similarity = 0.5 × cosine(N_상담, N_칼럼) + 0.5 × cosine(M_상담, M_칼럼)
+```
 
-## 학습 시 지킬 조건
+각 block의 길이에 영향을 받지 않게 cosine을 따로 계산한다. 보고서별 유사도 순위를 0..3으로 변환해 `rank:ndcg`의 관련도 label로 사용한다. 6자리 반올림으로 같은 점수는 같은 label이며, 전부 동점이면 학습 신호가 없어 실패한다. 0은 후보 집합에서 상대적으로 낮다는 뜻이며 절대적인 무관함을 뜻하지 않는다.
 
-- 한 JSONL 행은 보고서 하나와 후보 칼럼 하나의 pair다. 같은 `report_id`의 모든 후보를 하나의 ranking query group으로 묶는다. 정렬하거나 group 크기를 계산한 뒤 `XGBRanker.fit`에 전달한다.
-- `family_id` 단위로 train/validation/test를 나눠 동일 사례의 변형이 다른 split에 들어가지 않게 한다. split별로 각 보고서에 여러 후보와 구분 가능한 label이 있어야 한다.
-- 학습과 추론은 동일한 Q+N+M 순서, 결측 표현, 전처리 버전을 써야 한다. N은 `reference_document_ids`, M은 `consultation_type_ids` 순서다. Jev의 독립 확률을 합계 1로 정규화하지 않는다.
-- label은 0~3 정수의 칼럼 관련도이며 Jev 점수를 그대로 label로 삼지 않는다. 합성 데이터 평가는 파이프라인 검증 결과로만 해석한다.
-- BM25는 학습 입력에 추가하지 않는다. MMR 평가에서는 칼럼 버전과 일치하는 본문/토큰 snapshot을 별도로 읽어 칼럼 간 유사도를 계산한다. Q+N+M trainset 규격은 유지한다. λ 설정은 validation에서 정하고 test는 최종 비교에 사용한다.
+상담 보고서 N·M은 **오프라인 supervision에만** 사용한다. Ranker의 학습·서빙 입력은 그대로 `[Q_검사, N_후보칼럼, M_후보칼럼]` 15차원이다. 상담 결과를 추론 입력에 섞지 않는다.
 
-## Design Pattern 힌트
+## 학습·평가·저장
 
-**Pipeline**: load → validate → split 확인 → feature build → train → evaluate → export. **Shared Functional Core**: 학습/서빙에서 feature builder를 재사용한다. **Immutable Artifact**: 모델과 manifest를 같은 버전으로 보존한다.
+가족 단위 train/validation/test 12/4/4 사례를 분리한다. 같은 보고서의 후보 전체가 ranking query group이다. 현재 합성 상담 메모는 6개 패턴을 반복하며 split 간 동일 본문이 있을 수 있다. manifest·metrics의 dataAudit에 고유 메모 수와 split 간 본문 hash 중복을 기록한다. 학습·서빙 feature 조립 함수를 공유하고, LambdaMART 단독·BM25 다양성 적용 결과의 NDCG@3와 칼럼 간 유사도를 비교한다. topicCoverage는 칼럼 메타데이터 기반 보조 지표이며 학습 정답은 아니다.
+
+새 디렉터리에 model.ubj, manifest.json, metrics.json, columns.json, consultation-features.json, supervision.json, dataset/*.jsonl을 함께 저장한다. 기존 결과는 덮어쓰지 않는다. manifest에는 공급자·모델·축 순서·출처 hash·supervision 알고리즘·split을 기록한다.
+
+## 실행
+
+```sh
+uv run python -m training.lambdamart.pipeline --output artifacts/poc-consultation-v2-live --feature-mode live
+```
+
+`--columns <snapshot.json>`은 준비된 칼럼 목록을 입력받되 현재 featurizer와 cache 계약으로 다시 확인·계산한다. 테스트는 `--feature-mode mock`으로 외부 호출 없이 실행한다.
+
+합성 상담 메모와 모델 기반 관련도로 평가하므로 전문가 정답 기반 품질이나 실제 상담 효과를 입증하지 않는다.

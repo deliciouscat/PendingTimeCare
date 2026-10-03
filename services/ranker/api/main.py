@@ -7,6 +7,8 @@ from contextlib import asynccontextmanager
 from jsonschema import Draft202012Validator
 from xgboost import XGBRanker
 from services.ranker.core.model import features, select
+from services.questions.prompts import QuestionInput, render_question_input
+from pydantic import ValidationError
 
 ROOT=Path(__file__).resolve().parents[3]
 ARTIFACT=Path(os.environ.get('RANKER_ARTIFACT',ROOT/'artifacts'/'poc-v1'))
@@ -50,3 +52,17 @@ async def rank(request:Request):
     except Exception as e:
         raise HTTPException(422,'INVALID_INPUT') from e
     return {'requestId':payload['requestId'],'modelVersion':manifest['modelVersion'],'algorithmVersion':manifest['algorithmVersion'],'sourceMode':manifest['sourceMode'],'items':[{'columnId':payload['candidates'][i]['id'],'rank':rank+1,'score':float(scores[i])} for rank,i in enumerate(selected)]}
+
+
+@app.post('/question-input')
+async def question_input(request: Request):
+    if not hmac.compare_digest(request.headers.get('authorization', ''), f'Bearer {TOKEN}'):
+        raise HTTPException(401, 'UNAUTHORIZED')
+    body = await request.body()
+    if len(body) > 500000:
+        raise HTTPException(413, 'INPUT_TOO_LARGE')
+    try:
+        payload = QuestionInput.model_validate_json(body)
+    except ValidationError as error:
+        raise HTTPException(422, 'INVALID_QUESTION_INPUT') from error
+    return render_question_input(payload)
